@@ -24,6 +24,4 @@ ttk.Button(mainframe, text="Get Random Choice", command=get_list).grid(column=0,
 
 root.bind("<Return>", get_list)
 
-
-
 root = mainloop()
