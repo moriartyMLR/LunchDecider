@@ -4,13 +4,14 @@ from random import choice
 
 class LunchDecider:
     def __init__(self, root):
+        # Initializing main frame
         root.title("Random Food Decider")
         root.resizable(width=False, height=False)
-        root.bind("<Return>", self.get_list)
-
+        root.bind("<Return>", self.Random_choice)
         mainframe = ttk.Frame(root, padding="3 3 12 12")
         mainframe.grid(column=0, row=0, sticky=(N,S,E,W))
 
+        # Setting variables and placing labels
         self.list_choices = StringVar()
         self.picked_option = StringVar()
 
@@ -22,9 +23,11 @@ class LunchDecider:
         self.list_box_entry = ttk.Entry(mainframe, textvariable=list_box)
         self.list_box_entry.grid(column=0, row=1, padx=10, pady=10)
 
-        ttk.Button(mainframe, text="Get Random Choice", command=self.get_list).grid(column=0, row=2)
+        # Button to call random choice function
+        ttk.Button(mainframe, text="Get Random Choice", command=self.Random_choice).grid(column=0, row=2)
 
-    def get_list(self, *args):
+    def Random_choice(self, *args):
+        # Splits the text entered in the entry box into a list, a random selection gets stored
         self.list_choices = self.list_box_entry.get().replace(" ", "").split(",")
         self.picked_option.set(choice(self.list_choices))
 
