@@ -22,6 +22,7 @@ class LunchDecider:
         list_box = StringVar()
         self.list_box_entry = ttk.Entry(mainframe, textvariable=list_box)
         self.list_box_entry.grid(column=0, row=1, padx=10, pady=10)
+        self.list_box_entry.focus()
 
         # Button to call random choice function
         ttk.Button(mainframe, text="Get Random Choice", command=self.Random_choice).grid(column=0, row=2)
