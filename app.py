@@ -29,7 +29,7 @@ class LunchDecider:
 
     def Random_choice(self, *args):
         # Splits the text entered in the entry box into a list, a random selection gets stored
-        self.list_choices = self.list_box_entry.get().replace(" ", "").split(",")
+        self.list_choices = self.list_box_entry.get().split(",")
         self.picked_option.set(choice(self.list_choices))
 
 
