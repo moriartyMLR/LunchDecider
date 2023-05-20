@@ -9,39 +9,33 @@ class FoodDecider(ctk.CTk):
         self.resizable(width=False, height=False)
         self.geometry('600x400')
 
-        self.bind("<Return>", self.Random_choice)
-
-        # Setting variables and placing labels
-        self.list_choices = ctk.StringVar()
-        self.picked_option = ctk.StringVar()
+        # variables
+        self.entry_string = ctk.StringVar()
+        self.output_string = ctk.StringVar()
 
         # widgets
-        EntrySide(self)
+        EntrySide(self, self.entry_string, self.output_string, self.random_choice)
+        OutputSide(self, self.output_string)
 
-        # ctk.CTkLabel(mainframe, text="Options Separated by Commas").grid(column=0, row=0, padx=10, pady=5)
-        # ctk.CTkLabel(mainframe, text="Random Selection is:").grid(column=1, row=0, padx=10, pady=5)
-        # ctk.CTkLabel(mainframe, textvariable=self.picked_option).grid(column=1, row=1)
-
-        list_box = ctk.StringVar()
-        # self.list_box_entry = ctk.CTkEntry(mainframe, textvariable=list_box)
-        # self.list_box_entry.grid(column=0, row=1, padx=10, pady=10)
-        # self.list_box_entry.focus()
-
-        # Button to call random choice function
-        # ctk.CTkButton(mainframe, text="Get Random Choice", command=self.Random_choice).grid(column=0, row=2)
+        # event
+        self.bind('<Return>', self.random_choice)
 
         # run
         self.mainloop()
 
-    def Random_choice(self, *args):
-        # Splits the text entered in the entry box into a list, a random selection gets stored
-        self.list_choices = self.list_box_entry.get().split(",")
-        self.picked_option.set(choice(self.list_choices))
+    def random_choice(self, *args):
+        self.list_choices = self.entry_string.get().split(',')
+        self.output_string.set(choice(self.list_choices))
+        print(self.output_string.get())
 
 class EntrySide(ctk.CTkFrame):
-    def __init__(self, parent):
-        super().__init__(parent, fg_color = 'blue')
+    def __init__(self, parent, entry_string, output_string, save_func):
+        super().__init__(parent, fg_color = '#b3f2dd', corner_radius = 0)
+        # placing frame
         self.place(relx = 0.25, rely = 0.5, relwidth = 0.5, relheight = 1, anchor = 'center')
+
+        self.entry_string = entry_string
+        self.output_string = output_string
 
         # layout
         self.rowconfigure(0, weight = 2, uniform = 'a')
@@ -50,16 +44,41 @@ class EntrySide(ctk.CTkFrame):
         self.columnconfigure(0, weight = 1, uniform = 'a')
 
         # label
-        label = ctk.CTkLabel(self, text = 'Options Separated by Commas', text_color = 'white', font = ctk.CTkFont(family = 'Calibri', size = 17, weight = 'bold'))
+        label = ctk.CTkLabel(self, text = 'Enter Options Separated by Commas', text_color = 'gray', font = ctk.CTkFont(family = 'Calibri', size = 15, weight = 'bold'))
         label.grid(row = 0, column = 0, sticky = 'nsew')
 
         # entrybox
-        entry_box = ctk.CTkEntry(self)
-        entry_box.grid(row = 1, column = 0)
+        entry_box = ctk.CTkEntry(self, textvariable = entry_string)
+        entry_box.grid(row = 1, column = 0, sticky = 'nsew', padx = 10, pady = 10)
 
         # button
-        button = ctk.CTkButton(self, text = 'get random')
-        button.grid(row = 2, column = 0)
+        button = ctk.CTkButton(
+            self,
+            text = 'get random',
+            command = save_func,
+            fg_color = '#97f0d2',
+            text_color = 'gray',
+            font = ctk.CTkFont(family = 'Calibri', size = 20, weight = 'bold'),
+            hover_color = '#88dbc0')
+        button.grid(row = 2, column = 0, sticky = 'nsew', padx = 15, pady = 40)
+    
+class OutputSide(ctk.CTkFrame):
+    def __init__(self, parent, output_string):
+        super().__init__(parent, fg_color = '#b3f2f1', corner_radius = 0)
+        # placing frame
+        self.place(relx = 0.75, rely = 0.5, relwidth = 0.5, relheight = 1, anchor = 'center')
+        self.output_string = output_string
 
+        # layout
+        self.rowconfigure((0,1), weight = 1, uniform = 'b')
+        self.columnconfigure(0, weight = 1, uniform = 'b')
+
+        # label
+        label = ctk.CTkLabel(self, text = 'Random Choice is:', text_color = 'gray', font = ctk.CTkFont(family = 'Calibri', size = 20, weight = 'bold'))
+        label.grid(row = 0, column = 0, sticky = 'nsew')
+
+        # output label
+        output_label = ctk.CTkLabel(self, textvariable = self.output_string, text_color = 'gray', font = ctk.CTkFont(family = 'Calibri', size = 20, weight = 'bold'))
+        output_label.grid(row = 1, column = 0, sticky = 'new')
 
 FoodDecider()
